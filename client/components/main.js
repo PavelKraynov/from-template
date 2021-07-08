@@ -20,9 +20,9 @@ const Main = () => {
       <Head title="Hello" />
       <Header />
       <div className="flex flex-wrap h-screen" >
-        {listOfGoods.map((good) => {
-        return <div key={good.id}>
-        <Product good={good} />
+        {Object.entries(listOfGoods).map((good) => {
+        return <div key={good[0]}>
+        <Product good={good[1]} />
          </div>
       }) }</div>
     </div>

@@ -1,13 +1,10 @@
-// import axios from 'axios'
-
-const GET_PRODUCTS = 'GET_PRODUCTS'
-const ADD_RATES = 'ADD_RATES'
-const SET_CURRENCYNAME = 'SET_CURRENCYNAME'
-const SET_SORT_TYPE = 'SET_SORT_TYPE'
-
+const GET_PRODUCTS = 'store/products/GET_PRODUCTS'
+const ADD_RATES = 'store/products/ADD_RATES'
+const SET_CURRENCYNAME = 'store/products/SET_CURRENCYNAME'
+const SET_SORT_TYPE = 'store/products/SET_SORT_TYPE'
 
 const initialState = {
- goods : [],
+ goods : {},
  rates: {},
  currency: 'USD',
  sort: {
@@ -21,7 +18,7 @@ export default(state = initialState, action) => {
     case GET_PRODUCTS: {
       return {
         ...state,
-        goods: action.listOfGoods
+        goods: {...action.listOfGoods}
       }
     }
     case ADD_RATES: {
@@ -67,7 +64,10 @@ export function getProductsFromServer() {
     fetch('/api/v1/goods')
     .then((response) => response.json())
     .then((result) => {
-      dispatch({ type: GET_PRODUCTS, listOfGoods: result })
+      const objOfProducts = result.reduce((acc,product) => {
+        return {...acc, [product.id]: product}
+      },{})
+      dispatch({ type: GET_PRODUCTS, listOfGoods: objOfProducts })
     })
     .catch(err => err)
   }
