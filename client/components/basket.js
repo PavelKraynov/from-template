@@ -6,18 +6,22 @@ import BasketProduct from './basketProduct'
 
 const Basket = () => {
   const basketList = useSelector((s) => s.basket.basketProducts)
+  const totalPrice = useSelector((s) => s.basket.priceState)
   return (
     <div>
       <Head title="Basket" />
       <Header />
       <div className="flex flex-col items-center h-screen p-2">
-        {Object.keys(basketList).filter((id) => typeof basketList[id] !== "undefined").map((itemId) => {
-          return (
-            <div key = {itemId}>
-              <BasketProduct item = {{ id: itemId, amount: basketList[itemId] }}/>
-            </div>
-          )
-        })}
+        {Object.keys(basketList)
+          .filter((id) => typeof basketList[id] !== 'undefined')
+          .map((itemId) => {
+            return (
+              <div key={itemId}>
+                <BasketProduct item={{ id: itemId, amount: basketList[itemId] }} />
+              </div>
+            )
+          })}
+      <div>Total amount: {totalPrice}</div>
       </div>
     </div>
   )

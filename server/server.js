@@ -6,12 +6,11 @@ import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 
-
 import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
-const {readFile } = require('fs').promises
+const { readFile } = require('fs').promises
 
 require('colors')
 
@@ -40,23 +39,22 @@ middleware.forEach((it) => server.use(it))
 
 
 
-server.get('/api/v1/goods', async(req, res) => {
-  const data = await readFile(`${__dirname}/data/data.json`, {encoding: 'utf8'})
-  .then(text => JSON.parse(text))
-  .catch((err) => err)
+server.get('/api/v1/goods', async (req, res) => {
+  const data = await readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' })
+    .then((text) => JSON.parse(text))
+    .catch((err) => err)
   const filterGoods = data.filter((it, index) => index < 30)
   res.json(filterGoods)
 })
 
-server.get('/api/v1/goods/:type/:direction', async(req, res) => {
+server.get('/api/v1/goods/:type/:direction', async (req, res) => {
   const { type, direction } = req.params
-const data = await readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' })
-  .then((text) => JSON.parse(text))
-  .catch((err) => err)
+  const data = await readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' })
+    .then((text) => JSON.parse(text))
+    .catch((err) => err)
   const sorted = data.sort((a, b) => {
-
     if (type === 'price' && direction === 'a-z') {
-     return a.price - b.price
+      return a.price - b.price
     }
     if (type === 'price' && direction === 'z-a') {
       return b.price - a.price
@@ -67,18 +65,17 @@ const data = await readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' })
     if (type === 'title' && direction === 'z-a') {
       return b.title.localeCompare(a.title)
     }
-      return a.price - b.price
-
-    })
+    return a.price - b.price
+  })
   const filterGoods = sorted.filter((it, index) => index < 30)
   res.json(filterGoods)
-
 })
 
-server.get('/api/v1/rates', async(req, res) => {
-const rate = await axios('https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD')
-.then(({ data }) => data.rates)
-res.json(rate)
+server.get('/api/v1/rates', async (req, res) => {
+  const rate = await axios(
+    'https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD'
+  ).then(({ data }) => data.rates)
+  res.json(rate)
 })
 
 server.use('/api/', (req, res) => {
