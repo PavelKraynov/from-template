@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { history } from '../redux'
 import { setCurrency, sortProducts } from '../redux/reducers/products'
@@ -8,6 +8,7 @@ import { setCurrency, sortProducts } from '../redux/reducers/products'
 const Header = () => {
   const [dir, setDir] = useState(true)
   const dispatch = useDispatch()
+  const totalAmount = useSelector((s) => s.basket.priceState)
   const onClick = (e) => dispatch(setCurrency(e.target.textContent))
   const sortIt = (type) => {
     dispatch(sortProducts(type, dir ? 'a-z' : 'z-a'))
@@ -24,21 +25,31 @@ const Header = () => {
       </div>
       <div className="flex justify-between px-1">
         <div>
-          <button type="button" className="border p-1" onClick={(e)=>onClick(e)}>
+          <button type="button" className="border p-1" onClick={(e) => onClick(e)}>
             USD
           </button>
-          <button type="button" className="border p-1" onClick={(e)=>onClick(e)}>
+          <button type="button" className="border p-1" onClick={(e) => onClick(e)}>
             EUR
           </button>
-          <button type="button" className="border p-1" onClick={(e)=>onClick(e)}>
+          <button type="button" className="border p-1" onClick={(e) => onClick(e)}>
             CAD
           </button>
         </div>
         <div>
-          <button type="button" id="sort-price" className="border p-1" onClick={()=> sortIt('price')}>
+          <button
+            type="button"
+            id="sort-price"
+            className="border p-1"
+            onClick={() => sortIt('price')}
+          >
             Sort by price
           </button>
-          <button type="button" id="sort-name" className="border p-1" onClick={()=> sortIt('title')}>
+          <button
+            type="button"
+            id="sort-name"
+            className="border p-1"
+            onClick={() => sortIt('title')}
+          >
             Sort by name
           </button>
         </div>
@@ -51,7 +62,7 @@ const Header = () => {
           >
             basket
           </button>
-          <div>Summ</div>
+          <div>{totalAmount}</div>
         </div>
       </div>
     </nav>

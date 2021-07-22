@@ -16,7 +16,7 @@ const Product = (props) => {
         <div className="card_title">{props.good.title}</div>
         <div className="card_product_amount">{amount}</div>
         <button
-          className="border p-2"
+          className="border p-1"
           type="button"
           onClick={() => dispatch(addToBasket(props.good.id))}
         >

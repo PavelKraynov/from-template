@@ -3,7 +3,7 @@ const CHANGE_PRODUCTS = 'store/basket/CHANGE_PRODUCTS'
 
 const initialState = {
   basketProducts: {},
-  priceState: 0
+  totalAmount: 0
 }
 
 export default (state = initialState, action) => {
@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         basketProducts: action.changeGoods,
-        priceState: action.totalAmount
+        totalAmount: action.totalAmount
       }
     }
     default:
@@ -20,9 +20,8 @@ export default (state = initialState, action) => {
   }
 }
 
- function totalPrice(basket) {
+ function calculateTotalAmount(basket) {
    return Object.values(basket).reduce((acc, rec) => acc + rec, 0)
-
  }
 
 export function addToBasket(itemId) {
@@ -33,7 +32,7 @@ export function addToBasket(itemId) {
       typeof basket?.[itemId] === 'undefined'
         ? { ...basket, [itemId]: 1 }
         : { ...basket, [itemId]: basket[itemId] + 1 }
-       const totalAmount = totalPrice(updateBasket)
+       const totalAmount = calculateTotalAmount(updateBasket)
     dispatch({ type: CHANGE_PRODUCTS, changeGoods: updateBasket, totalAmount })
   }
 }
@@ -47,7 +46,7 @@ export function removeFromBusket(itemId) {
       delete updateBasket[itemId]
     }
 
-       const totalAmount = totalPrice(updateBasket)
+    const totalAmount = calculateTotalAmount(updateBasket)
     dispatch({ type: CHANGE_PRODUCTS, changeGoods: updateBasket, totalAmount })
   }
 }

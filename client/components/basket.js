@@ -6,7 +6,7 @@ import BasketProduct from './basketProduct'
 
 const Basket = () => {
   const basketList = useSelector((s) => s.basket.basketProducts)
-  const totalPrice = useSelector((s) => s.basket.priceState)
+  const totalPrice = useSelector((s) => s.basket.totalAmount)
   return (
     <div>
       <Head title="Basket" />
